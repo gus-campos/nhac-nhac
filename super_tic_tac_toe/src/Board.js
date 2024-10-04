@@ -10,7 +10,9 @@ export function SuperTicTacToeBoard({ctx, G, moves}) {
     width: '50px',
     height: '50px',
     lineHeight: '50px',
-    textAlign: 'center'
+    fontSize: '30px',
+    textAlign: 'center',
+    color: 'black'
   }
 
   const cellStyleFaded = {
@@ -19,7 +21,9 @@ export function SuperTicTacToeBoard({ctx, G, moves}) {
     width: '50px',
     height: '50px',
     lineHeight: '50px',
-    textAlign: 'center'
+    fontSize: '30px',
+    textAlign: 'center',
+    color: 'black'
   }
 
   const wonCellStyle = {
@@ -29,6 +33,7 @@ export function SuperTicTacToeBoard({ctx, G, moves}) {
     lineHeight: '176px',
     textAlign: 'center',
     fontSize: '48px',
+    color: 'black'
   }
 
   const superCellStyle = {
@@ -51,11 +56,16 @@ export function SuperTicTacToeBoard({ctx, G, moves}) {
       // Se for uma célula vencida
       if (G.superCellsWinners[superId]) {
 
+        let cellStyle = structuredClone(wonCellStyle);
+
+        if (G.superCellsWinners[superId] !== "D")      
+          cellStyle.color = (G.superCellsWinners[superId] === "0" ? "blue" : "green")
+
         superCells.push(
 
           <td>
-            <div style={wonCellStyle}>
-              {G.superCellsWinners[superId] === 'D' ? '*' : (G.superCellsWinners[superId] === "0" ? "X" : "O")}
+            <div style={cellStyle}>
+              {G.superCellsWinners[superId] === 'D' ? '-' : (G.superCellsWinners[superId] === "0" ? "X" : "O")}
             </div>
           </td>
 
@@ -74,15 +84,19 @@ export function SuperTicTacToeBoard({ctx, G, moves}) {
           
           const id = 3*k + l;
           
-          // Selecionando opacidade na disponibilidade da célula
+          // Selecionando opacidade na disponibilidade da célula, e cor
           let cellStyle = (G.currentSuperCell == null || G.currentSuperCell === superId) ? cellStyleBase : cellStyleFaded;
-
+          cellStyle = structuredClone(cellStyle);
+          cellStyle.color = (G.superCells[superId][id] === "0" ? "blue" : "green")
+          
           cells.push(
 
             <td>
+            
 
               {G.superCells[superId][id] ? (
               
+
                 <div style={cellStyle}>{(G.superCells[superId][id] === "0" ? "X" : "O")}</div>
               ) : (
                 <div style={cellStyle} onClick={()=>onClick(superId,id)}/>
