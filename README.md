@@ -1,4 +1,4 @@
-São jogos de tabuleiro implementados utilizando JS, com React para o front-end e a biblioteca boardgames.io para o back-end.
+Jogos de tabuleiro implementados utilizando JS, com React para o front-end e com a biblioteca boardgames.io no back-end. Usando a biblioteca de bordgames, também foi implementada um jogador automático, no qual a partir de uma listagem de jogadas possíveis, a biblioteca dispõe de métodos como Random e MCTS para fazer escolher entre as jogadas disponíveis.
 
 # Super Jogo da Velha
 
