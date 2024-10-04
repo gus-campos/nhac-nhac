@@ -4,7 +4,9 @@ São jogos de tabuleiro implementados utilizando JS, com React para o front-end 
 
 O Super Jogo da Velha é um jogo derivado do clássico jogo da velha, onde é preciso vender subjogos, para marcar no tabuleiro maior. Quem completar um sequência no tabuleiro maior, ganha.
 
-![](assets/super0.png)
+| Month    | Savings |
+| -------- | ------- |
+| ![](assets/super0.png) | - | 
 
 # Nhac Nhac (ou Gobblets Gobblers)
 
