@@ -10,8 +10,10 @@ O Super Jogo da Velha é um jogo derivado do clássico jogo da velha, onde é pr
 
 # Nhac Nhac (ou Gobblets Gobblers)
 
+Nhac Nhac é também um jogo de tabuleiro inspirado no jogo da velha clássico, onde invés de marcações "X" e "O", são usados peças de personagens que podem se cobrir umas às outras (como na imagem). Nessa versão, além de posicionar peças do estoque, peças do tabuleiro que estiverem por cima podem ser reposicionadas pelo jogador.
+
 |   |   |
 | - | - |
 | <img src="assets/nhac_nhac.png " width="450" /> | <img src="assets/nhac_nhac.gif" width="350" /> |
 
-Nhac Nhac é um jogo de tabuleiro inspirado no jogo da velha clássico, onde invés de marcaçõs "X" e "O", são usados peças de personagens que podem sobrepor uns aos outros. Nessa versão, além de posicionar peças do estoque, peças do tabuleiro que estiverem por cima podem ser reposicionadas.
+
