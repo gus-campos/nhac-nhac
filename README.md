@@ -8,7 +8,7 @@ O Super Jogo da Velha é um jogo derivado do clássico jogo da velha, onde é pr
 
 |   |   |   |
 | - | - | - |
-| <img src="assets/super0.jpg " width="300" /> | <img src="assets/super1.jpg " width="300" /> | <img src="assets/super.gif " width="300" /> |
+| <img src="assets/super0.jpg" /> | <img src="assets/super1.jpg" /> | <img src="assets/super.gif " width="300" /> |
 
 ## Nhac Nhac (ou Gobblets Gobblers)
 
@@ -16,6 +16,6 @@ Nhac Nhac é também um jogo de tabuleiro inspirado no jogo da velha clássico, 
 
 |   |   |
 | - | - |
-| <img src="assets/nhac_nhac.png " width="450" /> | <img src="assets/nhac_nhac.gif" width="350" /> |
+| <img src="assets/nhac_nhac.png" /> | <img src="assets/nhac_nhac.gif" /> |
 
 
