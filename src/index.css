@@ -103,12 +103,6 @@ code {
   font-size: 4em;
 }
 
-/* Out of stock */
-
-.stock-cell[data-amount="0"] {
-  color: gray;
-}
-
 /* ========= Gobbler's colors ========= */
 
 .gobbler {
@@ -126,6 +120,8 @@ code {
 .gobbler[data-selected="true"] {
   color: red;
 }
+
+/* Out of stock greyed out */
 
 .gobbler[data-amount="0"] {
   color: gray;
