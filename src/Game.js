@@ -10,7 +10,7 @@ export function FindCurrentSize(cells, id) {
   return null;
 }
 
-function temp(cells) {
+function getCellsTop(cells) {
 
   let cellsTop = Array(9).fill(null);
 
@@ -25,7 +25,7 @@ function temp(cells) {
 
 function IsVictory(cells) {
 
-  let cellsTop = temp(cells);
+  let cellsTop = getCellsTop(cells);
 
   const rows = [
     // Horizontal
