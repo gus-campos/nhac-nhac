@@ -23,8 +23,8 @@ code {
 /* ============== Containers ============== */
 
 .parent-grid-container {
-  display: grid; /* Use CSS Grid layout */
-  gap: 20px; /* Space between the two containers */
+  display: grid;
+  gap: 20px;
   justify-items: center;
 }
 
@@ -69,37 +69,47 @@ code {
 
 /* ========= Stock cells' gobblers ========= */
 
+/* Base size */
+
+.gobbler {
+  font-size: 15px;
+}
+
+/* Stock size scales */
+
+.stock-cell .gobbler[data-size="0"] {
+  font-size: 1em;
+}
+
+.stock-cell .gobbler[data-size="1"] {
+  font-size: 1.5em;
+}
+
+.stock-cell .gobbler[data-size="2"] {
+  font-size: 2.2em;
+}
+
+/* Board size scales */
+
+.board-cell .gobbler[data-size="0"] {
+  font-size: 1.5em;
+}
+
+.board-cell .gobbler[data-size="1"] {
+  font-size: 2.5em;
+}
+
+.board-cell .gobbler[data-size="2"] {
+  font-size: 4em;
+}
+
+/* Out of stock */
+
 .stock-cell[data-amount="0"] {
   color: gray;
 }
 
-.stock-cell .gobbler[data-size="0"] {
-  font-size: 15px;
-}
-
-.stock-cell .gobbler[data-size="1"] {
-  font-size: 20px;
-}
-
-.stock-cell .gobbler[data-size="2"] {
-  font-size: 25px;
-}
-
-/* ========= Board cells' gobblers ========= */
-
-.board-cell .gobbler[data-size="0"] {
-  font-size: 20px;
-}
-
-.board-cell .gobbler[data-size="1"] {
-  font-size: 35px;
-}
-
-.board-cell .gobbler[data-size="2"] {
-  font-size: 55px;
-}
-
-/* ========= Gobbler colors ========= */
+/* ========= Gobbler's colors ========= */
 
 .gobbler {
   position: absolute;
