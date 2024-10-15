@@ -11,7 +11,7 @@ body {
   display: grid; 
   place-items: center; 
   height: 100vh; 
-  width: 100vh;
+  width: 60vh;
   margin: 0;
 }
 
@@ -51,6 +51,8 @@ code {
   display: flex;
   justify-content: center;
   align-items: center;
+
+  font-size: 25px; /* Base gobbler size */
 }
 
 .stock-cell {
@@ -65,49 +67,25 @@ code {
   display: flex;
   justify-content: center;
   align-items: center;
+
+  font-size: 15px; /* Base gobbler size */
 }
 
-/* ========= Stock cells' gobblers ========= */
+/* ========= Gobblers size scales ========= */
 
-/* Base size */
-
-.gobbler {
-  font-size: 15px;
-}
-
-/* Stock size scales */
-
-.stock-cell .gobbler[data-size="0"] {
+.gobbler[data-size="0"] {
   font-size: 1em;
 }
 
-.stock-cell .gobbler[data-size="1"] {
+.gobbler[data-size="1"] {
   font-size: 1.5em;
 }
 
-.stock-cell .gobbler[data-size="2"] {
+.gobbler[data-size="2"] {
   font-size: 2.2em;
 }
 
-/* Board size scales */
-
-.board-cell .gobbler[data-size="0"] {
-  font-size: 1.5em;
-}
-
-.board-cell .gobbler[data-size="1"] {
-  font-size: 2.5em;
-}
-
-.board-cell .gobbler[data-size="2"] {
-  font-size: 4em;
-}
-
 /* ========= Gobbler's colors ========= */
-
-.gobbler {
-  position: absolute;
-}
 
 .gobbler[data-player="0"] {
   color: orange;
@@ -121,7 +99,7 @@ code {
   color: red;
 }
 
-/* Out of stock greyed out */
+/* Out of stock (greyed out) */
 
 .gobbler[data-amount="0"] {
   color: gray;

@@ -173,7 +173,7 @@ export const NhacNhac = {
       // Se jogo não tiver terminado
       if (!ctx.gameover) {
         
-        // Encontrar o movimento disponível de acordo com o stage atual 
+        // Encontrar o movimento disponível de acordo com o stage atual
         let move = ctx.activePlayers[ctx.currentPlayer];
         
         if (move === 'chooseGobbler') {
@@ -192,7 +192,7 @@ export const NhacNhac = {
           for (let id=0; id<9; id++) {
 
             // Quantidade de gobblers
-            let length = G.cells[id].length
+            let length = G.cells[id].length;
 
             // Se tiver gobbler, e o último for do player
             if (length > 0 && G.cells[id][length-1].playerID === String(ctx.currentPlayer))
@@ -206,7 +206,7 @@ export const NhacNhac = {
           for (let id=0; id<9; id++) {
 
             // Quantidade de gobblers
-            let length = G.cells[id].length
+            let length = G.cells[id].length;
 
             // Se estiver livre
             if (length === 0)
