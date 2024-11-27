@@ -8,3 +8,10 @@ Nhac Nhac é um jogo de tabuleiro inspirado no jogo da velha clássico, onde inv
 | - | - |
 | <img src="assets/nhac_nhac.png" /> | <img src="assets/nhac_nhac.gif" /> |
 
+# Instruções
+
+* Os dois jogadores são controlados por você através do mouse, alternando a vez.
+* Começando pelo laranja, clique na peça do estoque que deseja colocar no tabuleiro, e em seguida clique na célula do tabuleiro onde deseja posicioná-la.
+* Para mover uma peça, na sua vez clique em uma peça sua que esteja por cima, e em seguida clique na célula pra onde deseja movê-la.
+* Peças só podem ser posicionadas em células vazias, ou sobre peças menores que ela. 
+* Ganha quem, considerando apenas as peças no topo, fechar uma fileira (assim como no jogo da velha clássico). 
