@@ -52,7 +52,7 @@ code {
   justify-content: center;
   align-items: center;
 
-  font-size: 50px; /* Base gobbler size */
+  font-size: 50px; /* Base piece size */
 }
 
 .stock-cell {
@@ -68,48 +68,48 @@ code {
   justify-content: center;
   align-items: center;
 
-  font-size: 30px; /* Base gobbler size */
+  font-size: 30px; /* Base piece size */
 }
 
-/* ========= Gobblers size scales ========= */
+/* ========= Pieces size scales ========= */
 
-.gobbler {
+.piece {
   position: absolute;
 }
 
-.gobbler[data-size="0"] {
+.piece[data-size="0"] {
   font-size: 1em;
 }
 
-.gobbler[data-size="1"] {
+.piece[data-size="1"] {
   font-size: 1.5em;
 }
 
-.gobbler[data-size="2"] {
+.piece[data-size="2"] {
   font-size: 2.2em;
 }
 
-/* ========= Gobbler's colors ========= */
+/* ========= Pieces's colors ========= */
 
-.gobbler[data-player="0"] {
+.piece[data-player="0"] {
   color: orange;
 }
 
-.gobbler[data-player="1"] {
+.piece[data-player="1"] {
   color: blue;
 }
 
-.gobbler[data-selected="true"] {
+.piece[data-selected="true"] {
   color: red;
 }
 
 /* Out of stock (greyed out) */
 
-.gobbler[data-amount="0"] {
+.piece[data-amount="0"] {
   color: gray;
 }
 
-/* ========= ========= */
+/* ================== */
 
 .stock-amount {
   position: absolute;
@@ -118,3 +118,6 @@ code {
   font-size: 20px;
 }
 
+.result {
+  font-size: 40px;
+}

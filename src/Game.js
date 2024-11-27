@@ -1,16 +1,12 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
 
-export function FindCurrentSize(cells, id) {
-
-  for (let i=cells[id].length-1; i>=0; i--) {
-    if (cells[id][i] != null) {
-      return i;
-    }
-  }
-  return null;
-}
+// ====================== FUNÇÕES AUXILIARES ======================
 
 function getCellsTop(cells) {
+
+  /*
+  Pega a visão superior do jogo, considerando apenas as peças que estão por cima
+  */
 
   let cellsTop = Array(9).fill(null);
 
@@ -23,17 +19,20 @@ function getCellsTop(cells) {
   return cellsTop;
 }
 
-function IsVictory(cells) {
+function isVictory(cells) {
+
+  /*
+  Vrifica se o jogo está ganho
+  */
 
   let cellsTop = getCellsTop(cells);
 
+  // Fileiras válidas
   const rows = [
-    // Horizontal
-    [0,1,2], [3,4,5], [6,7,8],
-    // Vertical
-    [0,3,6], [1,4,7], [2,5,8],
-    // Diagonal
-    [0,4,8], [6,4,2]
+    
+    [0,1,2], [3,4,5], [6,7,8],  // Horizontal
+    [0,3,6], [1,4,7], [2,5,8],  // Vertical
+    [0,4,8], [6,4,2]            // Diagonal
   ];
 
   const isRowComplete = (row) => {
@@ -42,89 +41,71 @@ function IsVictory(cells) {
     return rowPlayerIds.every(playerID => (playerID!=null && playerID===rowPlayerIds[0]));
   }
   
-  // Internamente faz um mapping e verifica se algum retorno é true
+  // Verifica se alguma fileira está completa
   return rows.map(isRowComplete).some(i=>i===true);
 }
 
-function placeGobbler({ G, events, playerID }, id) {
+function placePiece({ G, events, playerID }, id) {
 
-  // Verificando validade das células
+  /*
+  Faz as alterações necessárias no estado para posicionar uma peça
+  */
+
+  // Verificando validade da célula
   if (id < 0 || id > 8)
     return INVALID_MOVE;
 
-  // Reposicionando
-  if (G.gobblerChose.toMove) {
+  // REPOSICIONANDO
 
-    // Não deixar mover pro mesmo lugar
-    if (G.gobblerChose.id === id)
+  if (G.pieceChose.toMove) {
+
+    if (G.pieceChose.id === id)
       return INVALID_MOVE
 
-    G.gobblerChose.toMove = false;
-    G.cells[G.gobblerChose.id].pop()
+    G.pieceChose.toMove = false;
+    G.cells[G.pieceChose.id].pop()
   }
+
+  // POSICIONANDO DO ESTOQUE
 
   else {
-    // Decrementar estoque, se necessário
-    G.stock[playerID][G.gobblerChose.size]--;
+    G.stock[playerID][G.pieceChose.size]--;
   }
 
-  // Achando o maior tamanho jogado nesta célula
-  let length = G.cells[id].length
-  let lastGobbler = length>0 ? G.cells[id][length-1] : null;
+  // MODIFICANDO TABULEIRO
+  let topPiece = getCellsTop(G.cells)[id];
 
-  // Se não tem gobbler, ou o gobble é válido
-  if (lastGobbler == null || G.gobblerChose.size > lastGobbler.size) {
-
-    // Definir id e colocar
-    G.gobblerChose.id = id; 
-    G.cells[id].push(G.gobblerChose);
-
-    // Anulando
-    G.gobblerChose = null;
-
-    events.endTurn();
-  }
-  
-  else {  
-
+  if (topPiece != null && G.pieceChose.size <= topPiece.size)
     return INVALID_MOVE;
-  }
+
+  // Definir id e posicionar
+  G.pieceChose.id = id; 
+  G.cells[id].push(G.pieceChose);
+  G.pieceChose = null;
+
+  events.endTurn();
 }
 
-function chooseGobbler({G, events, playerID }, id, size, stockPlayerID=null) {
+function choosePiece({G, events, playerID }, id, size, stockPlayerID=null) {
 
-  // Verificando se é caa sem gobbler
+  // Validações
+
   if (size == null)
     return INVALID_MOVE
 
-  // N deixar escolher gobbler do adversário
   if (stockPlayerID != null && String(stockPlayerID) !== playerID)
     return INVALID_MOVE
 
   if (size === undefined)
     return INVALID_MOVE
 
-  // Marcando que gobbler escolhido será movido
-  if (id != null) {
-
-    let gobbler = G.cells[id][G.cells[id].length-1];
+  // Se escolhido do tabuleiro
+  if (id == null) {
     
-    // Se for de outro player, anunciar jogada inválida
-    if (gobbler.playerID !== playerID)
+    if (G.stock[playerID][size] <= 0)
       return INVALID_MOVE;
-
-    gobbler.toMove = true;
-    G.gobblerChose = gobbler;
-  }
-
-  else {
-
-    // Verificando estoque
-    if (G.stock[playerID][size] < 1)
-      return INVALID_MOVE;
-
-    // Criando gobbler do estoque
-    G.gobblerChose = {
+  
+    G.pieceChose = {
       id: id,
       toMove: false,
       playerID: playerID,
@@ -132,89 +113,93 @@ function chooseGobbler({G, events, playerID }, id, size, stockPlayerID=null) {
     }
   }
   
-  events.setStage('placeGobbler');
+  // Se escolhido do estoque
+  else {
+    
+    let topPiece = getCellsTop(G.cells)[id];
+    
+    if (topPiece.playerID !== playerID)
+      return INVALID_MOVE;
+  
+    topPiece.toMove = true;
+    G.pieceChose = topPiece;
+  }
+  
+  events.setStage('placePiece');
 }
 
+// ========================= GAME =========================
+
+// Obedecendo interface do gameboard.io
 export const NhacNhac = {
   
   setup: () => ({ 
     
     cells: Array(9).fill([]),
     stock: [[2,2,2], [2,2,2]],
-    gobblerChose: null
+    pieceChose: null
   }),
 
   turn: {
     
-    // Começa o turno com o jogador atual no seguinte stage
-    activePlayers: { currentPlayer: 'chooseGobbler' },
+    // Começa o turno com o jogador atual no choosePiece
+    activePlayers: { currentPlayer: 'choosePiece' },
 
     stages: {
 
-      chooseGobbler: {
-
-        moves: { chooseGobbler }
+      choosePiece: {
+        moves: { choosePiece }
       },
 
-      // É ativado ao fim do stage anterior, e quando concluído, termina o turn
-      placeGobbler: {
-
-        moves: { placeGobbler }
+      placePiece: {
+        moves: { placePiece }
       }
     }
   },
 
   ai : {
 
+    // Listando jogadas possíveis para a IA
     enumerate : (G, ctx) => {
+      
+      /*
+      Lista as jogadas possíveis para que a IA possa escolher entre elas
+      */
       
       let moves = [];
       
-      // Se jogo não tiver terminado
       if (!ctx.gameover) {
         
-        // Encontrar o movimento disponível de acordo com o stage atual
         let move = ctx.activePlayers[ctx.currentPlayer];
-        
-        if (move === 'chooseGobbler') {
+
+        if (move === 'choosePiece') {
           
-          // ==== ESCOLHENDO DO ESTOQUE =====
+          // => Jogadas do estoque
 
           for (let size=0; size<3; size++)
+            if (G.stock[ctx.currentPlayer][size] > 0) 
+              moves.push({move:'choosePiece', args:[null, size, null]});
 
-            // Se tiver estoque
-            if (G.stock[ctx.currentPlayer][size] > 0)
-              moves.push({move:'chooseGobbler', args:[null, size, null]});
+          // => Jogadas de deslocamento
 
-          // ==== ESCOLHENDO DO TABULEIRO =====
-
-          // Para cada casa do tabuleiro
           for (let id=0; id<9; id++) {
 
-            // Quantidade de gobblers
-            let length = G.cells[id].length;
+            let topPiece = getCellsTop(G.cells)[id];
 
-            // Se tiver gobbler, e o último for do player
-            if (length > 0 && G.cells[id][length-1].playerID === String(ctx.currentPlayer))
-              moves.push({move:'chooseGobbler', args:[id, G.cells[id][length-1].size, null]});
+            // Se for movível
+            if (topPiece != null && topPiece.playerID === String(ctx.currentPlayer))
+              moves.push({move:'choosePiece', args:[id, topPiece.size, null]});
           }
         }
 
-        else if (move === 'placeGobbler') {
+        else if (move === 'placePiece') {
           
-          // Para cada casa do tabuleiro
           for (let id=0; id<9; id++) {
 
-            // Quantidade de gobblers
-            let length = G.cells[id].length;
+            let topPiece = getCellsTop(G.cells)[id];
 
-            // Se estiver livre
-            if (length === 0)
-              moves.push({move: 'placeGobbler', args: [id]});
-            
-            // Ou se último gobbler for menor que o gobbler escolhido
-            else if (G.gobblerChose.size > G.cells[id][length-1].size)
-              moves.push({move: 'placeGobbler', args: [id]});
+            if (topPiece === null || G.pieceChose.size > topPiece.size)
+              moves.push({move: 'placePiece', args: [id]});
           }
         }
       }
@@ -225,7 +210,7 @@ export const NhacNhac = {
 
   endIf: ({G, ctx}) => {
 
-    if (IsVictory(G.cells))
+    if (isVictory(G.cells))
       return { winner: ctx.currentPlayer }
   }
 };

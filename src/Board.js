@@ -2,72 +2,81 @@ import React from 'react';
 
 export function NhacNhacBoard({ctx, G, moves}) {
 
-    const chooseGobblerFromStock = (size, playerID) => moves.chooseGobbler(null, size, playerID);
-    
-    const clickCell = (id) => {
+    function clickCell(id) {
 
-        if (ctx.activePlayers[ctx.currentPlayer] === "chooseGobbler") {  
+        /*
+        Seleciona e executa ação do click de acordo com o modo atual
+        */
+
+        if (ctx.activePlayers[ctx.currentPlayer] === "choosePiece") {  
+            
             let length = G.cells[id].length;
-            moves.chooseGobbler(id, (length > 0) ? G.cells[id][length-1].size : null);
+            moves.choosePiece(id, (length > 0) ? G.cells[id][length-1].size : null);
         }
             
         else {
-            moves.placeGobbler(id);
+            
+            moves.placePiece(id);
         }
     }
-        
-    // RESULTADO
-    let result = ""
-    if (ctx.gameover) {
-        result = (ctx.gameover.winner) ? "Winner: " + (ctx.gameover.winner === "0" ? "ORANGE" : "BLUE"): "Draw!"
-    }
-    let resultElement = <div id="result">{result}</div>;
 
-    // TABULEIRO
-    let cells = [];
-    for (let i=0; i<3; i++) {
-        for (let j=0; j<3; j++) {
-
-            const id = 3*i + j;
-            
-            // DESENHANDO CADA GOBBLER
-            let length = G.cells[id].length
-            let gobblers = G.cells[id];
-            let gobblersChars = [];
-
-            for (let k=0; k<length; k++) {
+    function getCellsElements() {
+    
+        // Para cada célula
+        let cells = [];
+        for (let i=0; i<3; i++) {
+            for (let j=0; j<3; j++) {
+    
+                const id = 3*i + j;
                 
-                // Caracteres (gobblers)
-                gobblersChars.push(
+                // Desenhando cada peça
+                let length = G.cells[id].length
+                let pieces = G.cells[id];
+                let piecesChars = [];
+    
+                for (let k=0; k<length; k++) {
                     
-                    <div className="gobbler" 
-                         data-size={gobblers[k].size} 
-                         data-player={gobblers[k].playerID} 
-                         data-selected={gobblers[k].toMove}>O</div>
+                    // Caracter da peça
+                    piecesChars.push(
+                        
+                        <div className="piece"
+                             data-size={pieces[k].size} 
+                             data-player={pieces[k].playerID} 
+                             data-selected={pieces[k].toMove}>O</div>
+                    );
+                }
+    
+                // Adicionando células à lista de células da linha
+                cells.push(
+                
+                    <div className="board-cell" onClick={()=>clickCell(id)} key={id}>{piecesChars} </div>
                 );
             }
-
-            // Adicionando células à lista de células da linha
-            cells.push(
-            
-                <div className="board-cell" onClick={()=>clickCell(id)}>{gobblersChars}</div>
-            );
         }
+
+        return cells;
     }
 
-    // Listando elementos da seleção de gobblers
-    let selections = [[], []];
-    for (let playerID=0; playerID<2; playerID++) {
+    // ==================================================================
+
+    function getStockElments(playerID) {
+
+        // Ação de seleção do estoque
+        const choosePieceFromStock = (size, playerID) => moves.choosePiece(null, size, playerID);
+
+        // Listando elementos da seleção de pieces
+        let selections = [];
+
         for (let size=0; size<3; size++) {
 
             let amount = G.stock[playerID][size];
-            let selected = G.gobblerChose != null && G.gobblerChose.size === size && G.gobblerChose.playerID === String(playerID) && !G.gobblerChose.toMove;
+            let selected = G.pieceChose != null && G.pieceChose.size === size && G.pieceChose.playerID === String(playerID) && !G.pieceChose.toMove;
             
-            selections[playerID].push(
+            selections.push(
 
-                <div className="stock-cell" data-amount={amount} onClick={()=>chooseGobblerFromStock(size, playerID)}>
+                <div className="stock-cell" data-amount={amount} onClick={()=>choosePieceFromStock(size, playerID)} key={size*(playerID+1)}>
                     <div className="stock-amount">{amount}</div>
-                    <div className="gobbler" 
+                    <div className="piece" 
                             data-size={size} 
                             data-player={playerID} 
                             data-amount={amount} 
@@ -75,29 +84,45 @@ export function NhacNhacBoard({ctx, G, moves}) {
                 </div>
             );
         }
+
+        return selections;
     }
+
+    // ==================================================================
+
+    function getResultElement() {
+
+        let result = ""
+        if (ctx.gameover) {
+            result = (ctx.gameover.winner) ? "Winner: " + (ctx.gameover.winner === "0" ? "ORANGE" : "BLUE"): "Draw!"
+        }
+
+        return <div className= "result" id="result">{result}</div>;
+    }
+
+    // ==================================================================
 
     return (
 
         <div className="parent-grid-container">
 
-            {/* Seleção de peça do jogador 0 */}
+            {/* Estoque do jogador 0 */}
             <div className="stock-container">
-                {selections[0]}
+                {getStockElments(0)}
             </div>
 
             {/* Tabuleiro */}
             <div className="board-container">
-                {cells}
+                {getCellsElements()}
             </div>
 
-            {/* Seleção de peça do jogador 1 */}
+            {/* Estoque do jogador 1 */}
             <div className="stock-container"> 
-                {selections[1]}
+                {getStockElments(1)}
             </div>
 
             {/* Resultado */}
-            {resultElement}
+            {getResultElement()}
 
         </div>
     )
