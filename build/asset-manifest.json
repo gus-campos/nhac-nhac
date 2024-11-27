@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/nhac-nhac/static/css/main.58b4255f.css",
+    "main.js": "/nhac-nhac/static/js/main.14a7589e.js",
+    "static/js/453.585338a5.chunk.js": "/nhac-nhac/static/js/453.585338a5.chunk.js",
+    "index.html": "/nhac-nhac/index.html",
+    "main.58b4255f.css.map": "/nhac-nhac/static/css/main.58b4255f.css.map",
+    "main.14a7589e.js.map": "/nhac-nhac/static/js/main.14a7589e.js.map",
+    "453.585338a5.chunk.js.map": "/nhac-nhac/static/js/453.585338a5.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.58b4255f.css",
+    "static/js/main.14a7589e.js"
+  ]
+}
